@@ -1,0 +1,10 @@
+{
+  "name": "gym-pocket-plan",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "build:catalog": "node scripts/build-catalog.mjs",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

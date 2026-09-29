@@ -1,0 +1,179 @@
+{
+  "status": "partially_implemented",
+  "description": "User-provided workout outline. Implemented A/B template is in starter-plan.json. C still awaits the exercise list. Variant choices remain editable.",
+  "sets": 3,
+  "reps": "10 or 12",
+  "workouts": [
+    {
+      "id": "A",
+      "name": "Chest, shoulders, triceps & traps",
+      "exercises": [
+        {
+          "requested": "supino reto",
+          "candidateIds": [
+            "0025",
+            "0289",
+            "0577"
+          ],
+          "exerciseId": "0025"
+        },
+        {
+          "requested": "peck deck",
+          "candidateIds": [
+            "0596"
+          ],
+          "exerciseId": "0596"
+        },
+        {
+          "requested": "crucifixo",
+          "candidateIds": [
+            "0308",
+            "0185",
+            "0227"
+          ],
+          "exerciseId": "0308"
+        },
+        {
+          "requested": "supino inclinado",
+          "candidateIds": [
+            "0047",
+            "0314",
+            "1299"
+          ],
+          "exerciseId": "0047"
+        },
+        {
+          "requested": "supino declinado",
+          "candidateIds": [
+            "0033",
+            "0301",
+            "1300"
+          ],
+          "exerciseId": "0033"
+        },
+        {
+          "requested": "elevação frontal com halter ou na polia",
+          "candidateIds": [
+            "0310",
+            "0162"
+          ],
+          "exerciseId": "0310",
+          "alternativesRequested": true
+        },
+        {
+          "requested": "elevação lateral com halter ou na polia",
+          "candidateIds": [
+            "0334",
+            "0178",
+            "0192"
+          ],
+          "exerciseId": "0334",
+          "alternativesRequested": true
+        },
+        {
+          "requested": "tríceps francês",
+          "candidateIds": [
+            "2188",
+            "0092",
+            "0194"
+          ],
+          "exerciseId": "2188"
+        },
+        {
+          "requested": "tríceps testa",
+          "candidateIds": [
+            "0060",
+            "0351",
+            "1748"
+          ],
+          "exerciseId": "0060"
+        },
+        {
+          "requested": "tríceps pulley",
+          "candidateIds": [
+            "0201",
+            "0200",
+            "0241"
+          ],
+          "exerciseId": "0201"
+        },
+        {
+          "requested": "algum exercício para trapézio",
+          "candidateIds": [
+            "0406",
+            "0095",
+            "0220"
+          ],
+          "exerciseId": "0406"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Biceps & back",
+      "exercises": [
+        {
+          "requested": "puxada aberta",
+          "candidateIds": [
+            "0198",
+            "0150"
+          ],
+          "exerciseId": "0198"
+        },
+        {
+          "requested": "puxada fechada com triângulo V",
+          "candidateIds": [
+            "2616"
+          ],
+          "exerciseId": "2616"
+        },
+        {
+          "requested": "remada na altura do peito para costas",
+          "candidateIds": [
+            "1324",
+            "0581",
+            "0218"
+          ],
+          "exerciseId": "1324"
+        },
+        {
+          "requested": "remada baixa",
+          "candidateIds": [
+            "0180",
+            "0861",
+            "1350"
+          ],
+          "exerciseId": "0180"
+        },
+        {
+          "requested": "remada cavalinho",
+          "candidateIds": [
+            "0606",
+            "0574"
+          ],
+          "exerciseId": "0606"
+        },
+        {
+          "requested": "rosca bíceps com barra W",
+          "candidateIds": [
+            "0447",
+            "0031",
+            "0294"
+          ],
+          "exerciseId": "0447"
+        }
+      ],
+      "status": "mapped_to_starter_plan"
+    },
+    {
+      "id": "C",
+      "name": "Legs",
+      "exercises": [],
+      "status": "awaiting_exercise_list"
+    }
+  ],
+  "pending": [
+    "Exercise list for C",
+    "Confirm exact gym equipment and choose preferred variants"
+  ]
+}

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#192b24">
+  <meta name="description" content="Your simple, flexible A/B/C workout plan.">
+  <title>Pocket Plan — Your training, your pace</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar"><a class="brand" href="./"><span class="brand-mark" aria-hidden="true">p<span>p</span></span> pocket plan<span class="brand-dot">.</span></a><button id="settings-button" class="icon-button" aria-label="Plan settings" title="Plan settings">⚙</button></header>
+    <main>
+      <div id="error-banner" class="error-banner" role="alert" hidden></div>
+      <section class="intro"><p class="eyebrow"><span class="status-dot"></span> YOUR TRAINING, YOUR PACE</p><h1>A little structure.<br>A lot of flexibility.</h1><p class="intro-copy">Pick a workout. Make it fit your day.</p></section>
+      <section class="plan-section" aria-labelledby="plan-title">
+        <div class="section-heading"><div><p class="eyebrow">MY PLAN</p><h2 id="plan-title">Our training plan</h2></div><span class="local-badge" title="Saved only in this browser"><span aria-hidden="true">◉</span> On this device</span></div>
+        <nav class="workout-tabs" aria-label="Choose a workout" id="workout-tabs"></nav>
+        <div class="workout-heading"><div><h3 id="workout-title">Workout A</h3><p id="workout-summary">Loading your plan…</p></div><button id="rename-workout" class="text-button">Rename <span aria-hidden="true">↗</span></button></div>
+        <div id="exercise-list" class="exercise-list" aria-live="polite"><div class="loading-state">Getting things ready…</div></div>
+        <button id="add-exercise" class="add-button" disabled><span aria-hidden="true">＋</span> Add an exercise</button>
+        <aside class="flex-note"><span class="note-icon" aria-hidden="true">↪</span><p><strong>No fixed days. No catching up.</strong><br>Your workouts are here whenever you are.</p></aside>
+      </section>
+    </main>
+    <footer><span>Built for the way you train.</span><button class="text-button" id="share-button">Transfer plan <span aria-hidden="true">↗</span></button></footer>
+  </div>
+  <dialog id="library-dialog" class="sheet library-sheet" aria-labelledby="library-title">
+    <div class="sheet-header"><div><p class="eyebrow">EXERCISE LIBRARY</p><h2 id="library-title">Find your next move.</h2></div><button class="icon-button" data-close aria-label="Close exercise library">×</button></div>
+    <div class="library-controls"><label class="search-box"><span aria-hidden="true">⌕</span><input id="exercise-search" type="search" placeholder="Search exercises or muscles" aria-label="Search exercises"></label><div class="filter-line"><label for="category-filter" class="sr-only">Body part</label><select id="category-filter"><option value="">All body parts</option></select><button id="library-equipment" class="text-button">My equipment ↗</button></div><p id="library-count" class="muted" role="status"></p></div>
+    <div id="library-results" class="library-results"></div><button id="load-more" class="secondary-button" hidden>Show more exercises</button>
+  </dialog>
+  <dialog id="exercise-dialog" class="sheet detail-sheet" aria-labelledby="detail-title">
+    <div class="sheet-header"><p class="eyebrow" id="detail-eyebrow">EXERCISE</p><button class="icon-button" data-close aria-label="Close exercise details">×</button></div>
+    <div id="exercise-detail"></div>
+    <form id="exercise-form"><label id="variation-field" class="variation-field" hidden>Equipment busy? Choose a variation<select id="variation-select"></select><span class="field-hint">Choose one version for this exercise. Save to keep your choice.</span></label><div class="rep-presets" role="group" aria-label="Sets and reps shortcuts"><button type="button" data-reps="10" aria-pressed="false">3 × 10</button><button type="button" data-reps="12" aria-pressed="false">3 × 12</button><span>Or set your own below</span></div><div class="fields-row"><label>Sets<input id="sets-input" name="sets" type="number" min="1" max="99" inputmode="numeric" required placeholder="e.g. 3"></label><label>Reps<input id="reps-input" name="reps" type="text" maxlength="40" required placeholder="e.g. 8–12"></label></div><p class="field-hint">Enter a number or a range, such as 8–12.</p><button id="save-exercise" class="primary-button" type="submit">Add to workout</button></form>
+    <div id="edit-actions" class="edit-actions" hidden><button id="move-first" class="secondary-button">⇡ Move to top</button><button id="move-up" class="secondary-button">↑ Move up</button><button id="move-down" class="secondary-button">↓ Move down</button><button id="remove-exercise" class="danger-button">Remove</button></div>
+  </dialog>
+  <dialog id="settings-dialog" class="sheet" aria-labelledby="settings-title">
+    <div class="sheet-header"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="settings-title">Plan settings</h2></div><button class="icon-button" data-close aria-label="Close settings">×</button></div>
+    <form id="settings-form"><label>Plan name<input id="plan-name-input" maxlength="80" required></label><fieldset><legend>Your gym equipment</legend><p class="field-hint">Choose what you have access to. The library will only show exercises using these equipment types.</p><div id="equipment-options" class="equipment-options"></div></fieldset><p class="field-hint">Changing equipment filters the library. Exercises already in your plan stay in place.</p><button class="primary-button" type="submit">Save settings</button></form>
+    <section class="transfer-section"><h3>Take your plan with you.</h3><p>Download a backup and send it to your training partner. Import it on another device to use the same plan.</p><div class="transfer-actions"><button id="export-plan" class="secondary-button">↓ Export plan</button><button id="import-plan" class="secondary-button">↑ Import plan</button></div><input type="file" id="import-file" accept="application/json,.json" hidden><p class="field-hint">Plans are stored in this browser. Clearing browser data removes them. Changes do not sync between devices.</p><button id="load-starter" class="text-button">Load our starter A/B/C plan ↗</button></section>
+    <p class="media-credit">Dataset: <a href="https://github.com/hasaneyldrm/exercises-dataset" target="_blank" rel="noopener noreferrer">Exercises Dataset</a> · <a href="THIRD_PARTY_LICENSE" target="_blank">Data license</a>. Exercise media © <a href="https://gymvisual.com/" target="_blank" rel="noopener noreferrer">Gym visual</a> · <a href="NOTICE.md" target="_blank">Media notice</a>.</p>
+  </dialog>
+  <dialog id="rename-dialog" class="sheet small-sheet" aria-labelledby="rename-title"><div class="sheet-header"><h2 id="rename-title">Name this workout</h2><button class="icon-button" data-close aria-label="Close rename">×</button></div><form id="rename-form"><label>Workout name<input id="workout-name-input" maxlength="60" required></label><button class="primary-button" type="submit">Save name</button></form></dialog>
+  <dialog id="import-dialog" class="sheet small-sheet" aria-labelledby="import-title"><div class="sheet-header"><h2 id="import-title">Replace this plan?</h2><button class="icon-button" data-close aria-label="Cancel import">×</button></div><p id="import-summary"></p><p class="field-hint">This replaces all three workouts and equipment settings on this device. Export your current plan first if you want to keep it.</p><div class="transfer-actions"><button id="cancel-import" class="secondary-button">Cancel</button><button id="confirm-import" class="primary-button">Replace plan</button></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

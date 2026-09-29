@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "starterRevision": 2,
+  "name": "Our A/B/C plan",
+  "equipment": ["barbell", "dumbbell", "cable", "leverage machine", "ez barbell", "sled machine"],
+  "workouts": [
+    {
+      "id": "A",
+      "name": "Chest, shoulders, triceps & traps",
+      "exercises": [
+        { "key": "starter-a-flat", "label": "Flat bench press", "exerciseId": "0025", "variantIds": ["0025", "0289", "0577"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-pec", "label": "Pec deck", "exerciseId": "0596", "variantIds": ["0596"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-fly", "label": "Chest fly", "exerciseId": "0308", "variantIds": ["0308", "0185", "0227"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-incline", "label": "Incline bench press", "exerciseId": "0047", "variantIds": ["0047", "0314", "1299"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-decline", "label": "Decline bench press", "exerciseId": "0033", "variantIds": ["0033", "0301", "1300"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-front", "label": "Front raise", "exerciseId": "0310", "variantIds": ["0310", "0162"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-lateral", "label": "Lateral raise", "exerciseId": "0334", "variantIds": ["0334", "0178", "0192"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-french", "label": "Overhead triceps extension", "exerciseId": "2188", "variantIds": ["2188", "0092", "0194"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-skull", "label": "Lying triceps extension", "exerciseId": "0060", "variantIds": ["0060", "0351", "1748"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-pushdown", "label": "Triceps pushdown", "exerciseId": "0201", "variantIds": ["0201", "0200", "0241"], "sets": 3, "reps": "10" },
+        { "key": "starter-a-traps", "label": "Shrug · traps", "exerciseId": "0406", "variantIds": ["0406", "0095", "0220"], "sets": 3, "reps": "10" }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Back & biceps",
+      "exercises": [
+        { "key": "starter-b-wide", "label": "Wide-grip pulldown", "exerciseId": "0198", "variantIds": ["0198", "0150"], "sets": 3, "reps": "10" },
+        { "key": "starter-b-close", "label": "V-bar pulldown", "exerciseId": "2616", "variantIds": ["2616"], "sets": 3, "reps": "10" },
+        { "key": "starter-b-high", "label": "Row to chest", "exerciseId": "1324", "variantIds": ["1324", "0581", "0218"], "sets": 3, "reps": "10" },
+        { "key": "starter-b-low", "label": "Low row", "exerciseId": "0180", "variantIds": ["0180", "0861", "1350"], "sets": 3, "reps": "10" },
+        { "key": "starter-b-tbar", "label": "T-bar row", "exerciseId": "0606", "variantIds": ["0606", "0574"], "sets": 3, "reps": "10" },
+        { "key": "starter-b-curl", "label": "Biceps curl", "exerciseId": "0447", "variantIds": ["0447", "0031", "0294"], "sets": 3, "reps": "10" }
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Legs",
+      "exercises": [
+        { "key": "starter-c-extension", "label": "Leg extension", "exerciseId": "0585", "variantIds": ["0585"], "sets": 3, "reps": "10" },
+        { "key": "starter-c-press", "label": "Leg press", "exerciseId": "1463", "variantIds": ["1463", "2287"], "sets": 3, "reps": "10" },
+        { "key": "starter-c-hack", "label": "Hack squat", "exerciseId": "0743", "variantIds": ["0743", "0755"], "sets": 3, "reps": "10" },
+        { "key": "starter-c-curl", "label": "Lying leg curl", "exerciseId": "0586", "variantIds": ["0586", "0599"], "sets": 3, "reps": "10" },
+        { "key": "starter-c-adduction", "label": "Hip adduction", "exerciseId": "0598", "variantIds": ["0598", "0168"], "sets": 3, "reps": "10" },
+        { "key": "starter-c-abduction", "label": "Hip abduction", "exerciseId": "0597", "variantIds": ["0597"], "sets": 3, "reps": "10" }
+      ]
+    }
+  ]
+}
