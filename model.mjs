@@ -55,7 +55,7 @@ export function filterCatalog(catalog, equipment, query = '', category = '') {
   const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
   return catalog.filter(ex => equipment.includes(ex.equipment) && (!category || ex.category === category)
-    && terms.every(term => normalize(`${ex.name} ${ex.target} ${ex.equipment}`).includes(term)));
+    && terms.every(term => normalize(`${ex.name} ${ex.target} ${ex.equipment} ${ex.ptBR?.name || ''} ${ex.ptBR?.category || ''} ${ex.ptBR?.target || ''} ${ex.ptBR?.equipment || ''}`).includes(term)));
 }
 
 export function moveExercise(workout, key, delta) {

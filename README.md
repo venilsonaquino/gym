@@ -1,6 +1,6 @@
 # Pocket Plan
 
-MVP em HTML, CSS e JavaScript para consultar e editar fichas A/B/C no celular. Sem conta ou backend: cada navegador salva seu próprio plano em `localStorage`.
+MVP em HTML, CSS e JavaScript para consultar e personalizar fichas A/B/C pelo celular. A interface abre em português brasileiro e oferece alternância para inglês. Sem conta ou backend: cada navegador salva seu próprio plano no `localStorage`.
 
 ## Executar
 
@@ -10,36 +10,45 @@ Com Node.js 22 ou superior:
 npm start
 ```
 
-Abra http://localhost:4173. Para testar no celular na mesma rede, use o IP local do computador com a porta 4173 (o firewall precisa permitir a conexão). O servidor é apenas para desenvolvimento. Não abra `index.html` por `file://`, pois a aplicação usa módulos e `fetch`.
+Abra http://localhost:4173. Para usar no celular na mesma rede, acesse o IP local do computador pela porta 4173 (o firewall precisa permitir a conexão). O servidor serve apenas para desenvolvimento. Não abra `index.html` por `file://`, pois o aplicativo usa módulos e `fetch`.
 
-## Fluxo
+## Usar a ficha
 
-1. Escolha os equipamentos em **Plan settings**.
-2. Selecione A, B ou C, adicione exercícios e informe séries e repetições.
-3. Toque em um exercício para consultar a demonstração, editar ou reordenar.
-4. Use **Transfer plan → Export plan** para compartilhar um JSON. O colega usa **Import plan**, confere a substituição e passa a ter uma cópia independente.
+1. Em **Configurações da ficha**, escolha os equipamentos disponíveis na academia.
+2. Alterne entre os treinos A, B e C, adicione exercícios e ajuste séries e repetições.
+3. Toque em um exercício para consultar instruções, escolher uma variação ou mudar a ordem.
+4. Use **Transferir ficha** para exportar um arquivo JSON. A outra pessoa pode importá-lo e terá uma cópia independente.
 
-O plano inicial em `data/starter-plan.json` organiza os exercícios informados pelo usuário: A tem 11 exercícios (incluindo encolhimento como opção inicial para trapézio), B tem 6 e C tem 6 exercícios de pernas. As séries começam em **3 × 10**, com atalhos para **3 × 12**. As primeiras variações são escolhas de interface, editáveis; não significam que todos os aparelhos já foram confirmados na academia. Os tipos de equipamento do datasource são amplos; confira a demonstração da variante e ajuste os equipamentos nas configurações.
+A ficha inicial em `data/starter-plan.json` organiza os exercícios descritos pelo usuário: A tem 11 exercícios, incluindo encolhimento como opção inicial para trapézio; B tem 6; C tem 6 exercícios de pernas. Os exercícios começam em **3 × 10**, com atalho para **3 × 12**. As variações são sugestões editáveis e não confirmam que os aparelhos existem naquela academia. O catálogo descreve tipos genéricos de equipamento; confira a demonstração e ajuste os equipamentos nas configurações.
 
-O seletor de variações substitui o exercício no mesmo espaço da ficha e preserva séries, repetições e alternativas. **Move to top**, **Move up** e **Move down** alteram a ordem salva, sem marcar execução nem impor sequência. As fichas seguem livres de calendário.
+A troca de variação conserva séries, repetições e as demais alternativas. A pessoa pode mover exercícios ao início, para cima ou para baixo, sem registrar execução nem impor sequência. A ficha não exige dias fixos.
 
-O plano inicial carrega automaticamente para um navegador novo ou o plano vazio original sem alterações. Se o navegador já tinha a versão anterior do plano A/B com C vazio, somente os seis exercícios de C são acrescentados; alterações em A/B são preservadas. Planos C personalizados são preservados. **Plan settings → Load our starter A/B/C plan** permite substituir o plano inteiro após conferir a confirmação. Exportação/importação preservam as variações. Backups antigos sem variações continuam compatíveis.
+O plano inicial é carregado em um navegador novo ou em uma ficha vazia sem alterações. Se o navegador tiver a versão anterior do plano A/B com C vazio, os exercícios de C são acrescentados, preservando edições em A/B. Uma ficha C personalizada também é preservada. **Carregar ficha inicial A/B/C** permite substituir o plano depois de confirmar. A importação/exportação preserva as variações e continua compatível com backups antigos.
 
-O encolhimento com halteres tem demonstração adicional em https://library.theprehabguys.com/vimeo-video/shrug-dumbbell-3/. A lista de A/B registra o treino descrito pelo usuário; não é uma avaliação da adequação do volume ou da distribuição do treino.
+O encolhimento com halteres tem uma demonstração adicional em https://library.theprehabguys.com/vimeo-video/shrug-dumbbell-3/. A lista A/B registra o treino descrito pelo usuário e não avalia volume ou distribuição.
 
-O aplicativo não sincroniza alterações, não registra sessões e não tem suporte offline garantido. Limpar dados do navegador remove o plano; exporte um backup. Mudar domínio ou porta também muda o armazenamento acessível.
+O aplicativo não sincroniza alterações, registra sessões ou garante suporte offline. Limpar os dados do navegador remove a ficha; exporte um backup. Mudar o domínio ou a porta muda o armazenamento acessível.
 
-## Dados
+## Dados e tradução
 
-`data/catalog.json` é uma projeção do [Exercises Dataset](https://github.com/hasaneyldrm/exercises-dataset), mantendo os 1.324 registros e apenas as instruções em inglês. IDs continuam sendo strings. O arquivo está incluído neste repositório; o catálogo funciona sem clonar o datasource. `npm run build:catalog` só é necessário para atualizar a projeção e exige uma cópia local do projeto original em `exercises-dataset/`.
+`data/catalog.json` é uma projeção do [Exercises Dataset](https://github.com/hasaneyldrm/exercises-dataset), com 1.324 exercícios, IDs e instruções originais em inglês. Cada exercício inclui também um objeto `ptBR` com nome, categoria, equipamento, músculos-alvo e instruções. Neste catálogo, 3.970 de 7.710 instruções têm texto traduzido; as demais mantêm o original em inglês. Campos sem tradução preservam a fonte para não perder informação. As traduções automáticas são para consulta e podem exigir ajustes nos termos usados em cada academia.
+
+Para reconstruir o catálogo a partir de uma cópia local do dataset original em `exercises-dataset/`:
 
 ```sh
 npm run build:catalog
-npm test
 ```
 
-As 1.324 imagens em `images/` e os 1.324 GIFs em `videos/` estão incluídos neste repositório e são carregados pelos caminhos em `data/catalog.json`. O catálogo não classifica modelos específicos de máquinas.
+A reconstrução conserva as traduções dos mesmos IDs. Para preencher ou atualizar traduções, com acesso à internet:
+
+```sh
+npm run translate:pt-BR
+```
+
+O script traduz frases distintas em lotes, guarda o progresso em `data/.pt-br-translation-cache.json` (ignorado pelo Git) para permitir retomada e grava o resultado em `data/catalog.json`, preservando em inglês os trechos ainda não traduzidos. Se a conexão com o serviço falhar, execute o comando novamente quando ele estiver disponível. O aplicativo usa o catálogo incluído e não consulta o serviço de tradução durante a execução.
+
+As 1.324 imagens em `images/` e os 1.324 GIFs em `videos/` estão incluídos no repositório. O catálogo não especifica modelos de máquinas por academia.
 
 ## Licenças
 
-Dados derivados de Exercises Dataset, Copyright (c) 2026 Hasan Emir Yıldırım, sob os termos em [THIRD_PARTY_LICENSE](THIRD_PARTY_LICENSE). As mídias são © Gym visual — https://gymvisual.com/ e seguem as condições em [NOTICE.md](NOTICE.md), fornecido com os arquivos. A interface exibe a atribuição junto às mídias. O aviso do projeto original diz que clonar o dataset não concede automaticamente uma licença própria de uso ou redistribuição das mídias.
+Os dados derivam do Exercises Dataset, Copyright (c) 2026 Hasan Emir Yıldırım, conforme [THIRD_PARTY_LICENSE](THIRD_PARTY_LICENSE). As mídias são © Gym visual — https://gymvisual.com/ — conforme [NOTICE.md](NOTICE.md), fornecido com os arquivos. O aplicativo exibe a atribuição junto às mídias. O aviso do dataset original esclarece que clonar o dataset não concede automaticamente uma licença própria de uso ou redistribuição das mídias.
