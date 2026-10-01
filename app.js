@@ -1,7 +1,8 @@
-import { STORAGE_KEY, blankPlan, validatePlan, filterCatalog, moveExercise, selectVariant, isUntouchedPlan, addMissingStarterLegs } from './model.mjs';
+import { STORAGE_KEY, blankPlan, validatePlan, filterCatalog, moveExercise, selectVariant, isUntouchedPlan, addMissingStarterLegs, addLaraBandVariants } from './model.mjs';
 
 const $ = selector => document.querySelector(selector);
-let catalog = [], byId = new Map(), plan, starterPlan, activeWorkout = 'A', editing = null, pendingImport = null, pageSize = 30, storageBlocked = false, mediaAvailable = false;
+let catalog = [], byId = new Map(), plan, starterPlan, laraPlan, activeAthlete = 'venilson', activeWorkout = 'A', editing = null, pendingImport = null, pageSize = 30, storageBlocked = false, mediaAvailable = false;
+const LARA_STORAGE_KEY = 'pocket-plan.lara.v1';
 const LOCALE_KEY = 'pocket-plan.locale.v1';
 let locale = localStorage.getItem(LOCALE_KEY) === 'en' ? 'en' : 'pt-BR';
 const strings = {
@@ -13,7 +14,10 @@ const all = selector => [...document.querySelectorAll(selector)];
 const ptWorkoutNames = { 'Our A/B/C plan':'Nossa ficha A/B/C', 'Our training plan':'Nossa ficha A/B/C', 'Our plan':'Nossa ficha A/B/C', 'Chest, shoulders, triceps & traps':'Peito, ombros, tríceps e trapézio', 'Back & biceps':'Costas e bíceps', 'Legs':'Pernas', 'Workout A':'Treino A', 'Workout B':'Treino B', 'Workout C':'Treino C' };
 const ptExerciseNames = { 'Flat bench press':'Supino reto', 'Pec deck':'Peck deck', 'Chest fly':'Crucifixo', 'Incline bench press':'Supino inclinado', 'Decline bench press':'Supino declinado', 'Front raise':'Elevação frontal', 'Lateral raise':'Elevação lateral', 'Overhead triceps extension':'Tríceps francês', 'Lying triceps extension':'Tríceps testa', 'Triceps pushdown':'Tríceps na polia', 'Shrug · traps':'Encolhimento para trapézio', 'Wide-grip pulldown':'Puxada aberta na polia alta', 'V-bar pulldown':'Puxada fechada com triângulo V', 'Row to chest':'Remada alta para o peito', 'Low row':'Remada baixa', 'T-bar row':'Remada cavalinho', 'Biceps curl':'Rosca bíceps com barra W', 'Leg extension':'Cadeira extensora', 'Leg press':'Leg press', 'Hack squat':'Agachamento hack', 'Lying leg curl':'Mesa flexora', 'Hip adduction':'Cadeira adutora', 'Hip abduction':'Cadeira abdutora' };
 const ptTerms = { 'Dumbbell':'Halteres','Barbell':'Barra','Body weight':'Peso corporal','Cable':'Polia','Leverage machine':'Máquina de alavanca','Ez barbell':'Barra EZ','Sled machine':'Máquina de trilho','Rope':'Corda','Smith machine':'Máquina Smith','Resistance band':'Faixa elástica','Pectorals':'Peitorais','Delts':'Ombros','Traps':'Trapézio','Lats':'Costas','Middle back':'Meio das costas','Lower back':'Região lombar','Abs':'Abdominais','Quads':'Quadríceps','Hamstrings':'Posteriores da coxa','Abductors':'Abdutores','Adductors':'Adutores','Medicine ball':'Bola medicinal' };
-function exerciseName(ex, entry) { return locale === 'pt-BR' ? (entry?.label ? ptExerciseNames[entry.label] || entry.label : ex.ptBR?.name || ex.name) : entry?.label || ex.name; }
+function exerciseName(ex, entry) {
+  const showLabel = entry?.label && !entry.key?.startsWith('lara-') && (!entry.variantIds || entry.variantIds[0] === ex.id);
+  return locale === 'pt-BR' ? (showLabel ? ptExerciseNames[entry.label] || entry.label : ex.ptBR?.name || ex.name) : (showLabel ? entry.label : ex.name);
+}
 function workoutName(name) { return locale === 'pt-BR' ? ptWorkoutNames[name] || name : name; }
 function planName(name) { return locale==='pt-BR' && ['Our A/B/C plan','Our training plan'].includes(name)?'Nossa ficha A/B/C':name; }
 Object.assign(ptTerms, { 'chest':'Peito','waist':'Cintura','upper legs':'Coxas','lower legs':'Panturrilhas','lower arms':'Antebraços','upper arms':'Braços','shoulders':'Ombros','back':'Costas','cardio':'Cardio','neck':'Pescoço','other':'Outros','weighted':'Com peso','assisted':'Assistido','olympic barbell':'Barra olímpica','stability ball':'Bola suíça','medicine ball':'Bola medicinal','kettlebell':'Kettlebell','band':'Faixa elástica','bosu ball':'Bola BOSU','elliptical machine':'Elíptico','hammer':'Máquina Hammer','roller':'Rolo de exercícios','skierg machine':'Máquina SkiErg','stationary bike':'Bicicleta ergométrica','stepmill machine':'Escada ergométrica','tire':'Pneu','trap bar':'Barra hexagonal','upper body ergometer':'Ergômetro de braços','wheel roller':'Roda abdominal' });
@@ -64,7 +68,7 @@ function save(next) {
   if (storageBlocked) { toast(locale==='pt-BR'?'Não foi possível ler a ficha salva. Exporte uma cópia antes de continuar.':'The saved data could not be read. Export this plan before continuing.'); return false; }
   try {
     const clean = validatePlan(next, catalog);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(clean));
+    localStorage.setItem(activeAthlete === 'lara' ? LARA_STORAGE_KEY : STORAGE_KEY, JSON.stringify(clean));
     plan = clean;
     $('#error-banner').hidden = true;
     renderPlan();
@@ -139,7 +143,7 @@ function showExercise(ex, key = null, draft = null) {
   $('#sets-input').value = draft?.sets ?? entry?.sets ?? 3; $('#reps-input').value = draft?.reps ?? entry?.reps ?? '10';
   const variants = entry?.variantIds || [];
   $('#variation-field').hidden = variants.length < 2;
-  $('#variation-select').replaceChildren(...variants.map(id => { const variant = byId.get(id); const option = node('option', '', `${cap(variant.equipment)} — ${variant.name}`); option.value = id; return option; }));
+  $('#variation-select').replaceChildren(...variants.map(id => { const variant = byId.get(id); const option = node('option', '', `${cap(translated(variant, 'equipment'))} — ${exerciseName(variant)}`); option.value = id; return option; }));
   $('#variation-select').value = ex.id;
   syncRepPresets();
   $('#save-exercise').textContent = entry ? t('save') : `${t('addTo')} ${activeWorkout}`;
@@ -159,6 +163,29 @@ all('[data-close]').forEach(button => { button.onclick = () => button.closest('d
 all('dialog').forEach(dialog => { dialog.addEventListener('click', event => { if (event.target === dialog) { const rect = dialog.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close(); } }); });
 $('#exercise-dialog').addEventListener('close', () => { $('#exercise-detail').replaceChildren(); });
 $('#language-toggle').onclick = () => { locale = locale === 'pt-BR' ? 'en' : 'pt-BR'; localStorage.setItem(LOCALE_KEY, locale); applyLocale(); };
+function selectAthlete(id) {
+  activeAthlete = id;
+  plan = structuredClone(id === 'lara' ? laraPlan : starterPlan);
+  const key = id === 'lara' ? LARA_STORAGE_KEY : STORAGE_KEY;
+  storageBlocked = false;
+  $('#error-banner').hidden = true;
+  let needsSave = false;
+  try {
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      plan = validatePlan(JSON.parse(saved), catalog);
+      if (id === 'lara') needsSave = addLaraBandVariants(plan, laraPlan);
+    }
+  } catch { storageBlocked = true; error('A ficha salva não pôde ser lida. Os dados existentes foram preservados e a edição foi bloqueada.'); }
+  activeWorkout = 'A';
+  $('.plan-section').hidden = false;
+  renderPlan();
+  const savedOk = !needsSave || storageBlocked || save(plan);
+  document.querySelector('.plan-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!storageBlocked && savedOk) toast(id === 'lara' ? 'Ficha da Lara carregada' : 'Ficha do Venilson carregada');
+}
+$('#athlete-lara').onclick = () => selectAthlete('lara');
+$('#athlete-venilson').onclick = () => selectAthlete('venilson');
 $('#settings-button').onclick = showSettings; $('#share-button').onclick = () => { showSettings(); $('.transfer-section').scrollIntoView({ block: 'center' }); };
 $('#add-exercise').onclick = showLibrary; $('#library-equipment').onclick = showSettings;
 $('#exercise-search').oninput = $('#category-filter').onchange = () => { pageSize = 30; renderLibrary(); };
@@ -224,6 +251,8 @@ async function init() {
     fillCategories();
     const starterResponse = await fetch('./data/starter-plan.json'); if (!starterResponse.ok) throw new Error('The starter plan is unavailable.');
     starterPlan = validatePlan(await starterResponse.json(), catalog);
+    const laraResponse = await fetch('./data/lara-plan.json'); if (!laraResponse.ok) throw new Error('The Lara plan is unavailable.');
+    laraPlan = validatePlan(await laraResponse.json(), catalog);
     let needsStarterSave = false;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "Lara — Glúteos, pernas e definição",
+  "equipment": ["barbell", "dumbbell", "cable", "leverage machine", "sled machine", "resistance band", "band", "body weight"],
+  "workouts": [
+    {"id":"A","name":"Glúteos e quadríceps","exercises":[
+      {"key":"lara-a-press","label":"Leg press","exerciseId":"2287","variantIds":["2287","1463","1004"],"sets":3,"reps":"8–12"},
+      {"key":"lara-a-bridge","label":"Barbell glute bridge","exerciseId":"1409","variantIds":["1409","1408"],"sets":3,"reps":"8–12"},
+      {"key":"lara-a-squat","label":"Hack squat","exerciseId":"0743","variantIds":["0743","0755","1004"],"sets":3,"reps":"8–12"},
+      {"key":"lara-a-extension","label":"Leg extension","exerciseId":"0585","variantIds":["0585","3007"],"sets":3,"reps":"10–15"},
+      {"key":"lara-a-abduction","label":"Hip abduction","exerciseId":"0597","variantIds":["0597","3006"],"sets":3,"reps":"12–20"},
+      {"key":"lara-a-calf","label":"Standing calf raise","exerciseId":"0417","variantIds":["0417","1369"],"sets":3,"reps":"12–20"}
+    ]},
+    {"id":"B","name":"Costas, ombros e abdômen","exercises":[
+      {"key":"lara-b-pulldown","label":"Wide-grip pulldown","exerciseId":"0198","variantIds":["0198","0150","0974"],"sets":3,"reps":"8–12"},
+      {"key":"lara-b-row","label":"Low row","exerciseId":"0180","variantIds":["0180","0861","3144"],"sets":3,"reps":"8–12"},
+      {"key":"lara-b-chest","label":"Chest press","exerciseId":"0025","variantIds":["0025","3124"],"sets":3,"reps":"8–12"},
+      {"key":"lara-b-shoulder","label":"Band shoulder press","exerciseId":"0997","variantIds":["0997","0405"],"sets":3,"reps":"10–12"},
+      {"key":"lara-b-lateral","label":"Lateral raise","exerciseId":"0334","variantIds":["0334","0977"],"sets":3,"reps":"10–15"},
+      {"key":"lara-b-deadbug","label":"Dead bug","exerciseId":"0276","variantIds":["0276","0979"],"sets":3,"reps":"8–12"}
+    ]},
+    {"id":"C","name":"Glúteos e posteriores","exercises":[
+      {"key":"lara-c-bridge","label":"Barbell glute bridge","exerciseId":"1409","variantIds":["1409","1408"],"sets":3,"reps":"8–12"},
+      {"key":"lara-c-romanian","label":"Barbell romanian deadlift","exerciseId":"0085","variantIds":["0085","1009"],"sets":3,"reps":"8–12"},
+      {"key":"lara-c-curl","label":"Lying leg curl","exerciseId":"0586","variantIds":["0586","0599","0991"],"sets":3,"reps":"10–15"},
+      {"key":"lara-c-lunge","label":"Dumbbell lunge","exerciseId":"0336","variantIds":["0336","1001"],"sets":3,"reps":"8–10"},
+      {"key":"lara-c-extension","label":"Cable standing hip extension","exerciseId":"0228","variantIds":["0228","0980"],"sets":3,"reps":"10–15"},
+      {"key":"lara-c-abduction","label":"Hip abduction","exerciseId":"0597","variantIds":["0597","3006"],"sets":3,"reps":"12–20"}
+    ]}
+  ]
+}

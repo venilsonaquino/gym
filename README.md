@@ -1,6 +1,6 @@
 # Pocket Plan
 
-MVP em HTML, CSS e JavaScript para consultar e personalizar fichas A/B/C pelo celular. A interface abre em português brasileiro e oferece alternância para inglês. Sem conta ou backend: cada navegador salva seu próprio plano no `localStorage`.
+MVP em HTML, CSS e JavaScript para consultar e personalizar fichas A/B/C pelo celular. A interface abre em português brasileiro e oferece alternância para inglês. Sem conta ou backend: cada navegador salva as fichas de Venilson e Lara separadamente no `localStorage`.
 
 ## Executar
 
@@ -14,12 +14,14 @@ Abra http://localhost:4173. Para usar no celular na mesma rede, acesse o IP loca
 
 ## Usar a ficha
 
-1. Em **Configurações da ficha**, escolha os equipamentos disponíveis na academia.
+1. Escolha **Venilson** ou **Lara** na tela inicial. Em **Configurações da ficha**, escolha os equipamentos disponíveis.
 2. Alterne entre os treinos A, B e C, adicione exercícios e ajuste séries e repetições.
 3. Toque em um exercício para consultar instruções, escolher uma variação ou mudar a ordem.
 4. Use **Transferir ficha** para exportar um arquivo JSON. A outra pessoa pode importá-lo e terá uma cópia independente.
 
 A ficha inicial em `data/starter-plan.json` organiza os exercícios descritos pelo usuário: A tem 11 exercícios, incluindo encolhimento como opção inicial para trapézio; B tem 6; C tem 6 exercícios de pernas. Os exercícios começam em **3 × 10**, com atalho para **3 × 12**. As variações são sugestões editáveis e não confirmam que os aparelhos existem naquela academia. O catálogo descreve tipos genéricos de equipamento; confira a demonstração e ajuste os equipamentos nas configurações.
+
+A ficha da Lara em `data/lara-plan.json` tem três treinos e uma opção com elástico em cada exercício, usando entradas existentes no catálogo. Para mesa flexora e dead bug, as opções com elástico são movimentos alternativos para a mesma região, não versões idênticas: pull through e Pallof press. Alterações feitas na ficha da Lara antes dessa atualização recebem as novas opções quando ela é aberta, preservando séries, repetições e exercícios adicionados.
 
 A troca de variação conserva séries, repetições e as demais alternativas. A pessoa pode mover exercícios ao início, para cima ou para baixo, sem registrar execução nem impor sequência. A ficha não exige dias fixos.
 

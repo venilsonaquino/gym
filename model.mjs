@@ -51,6 +51,27 @@ export function addMissingStarterLegs(plan, starter) {
   return true;
 }
 
+export function addLaraBandVariants(plan, template) {
+  const templateEntries = new Map(template.workouts.flatMap(workout => workout.exercises.map(entry => [entry.key, entry])));
+  const correctedIds = { 'lara-a-calf': ['1367', '0417'], 'lara-c-lunge': ['0303', '0336'] };
+  let changed = false;
+  let hasLaraExercises = false;
+  for (const workout of plan.workouts) for (const entry of workout.exercises) {
+    const source = templateEntries.get(entry.key);
+    if (!source) continue;
+    hasLaraExercises = true;
+    const correction = correctedIds[entry.key];
+    if (correction?.[0] === entry.exerciseId) { entry.exerciseId = correction[1]; changed = true; }
+    const variants = [...new Set([...(entry.variantIds || [entry.exerciseId]), ...source.variantIds]
+      .map(id => correction?.[0] === id ? correction[1] : id))];
+    if (!variants.includes(entry.exerciseId)) variants.unshift(entry.exerciseId);
+    if (JSON.stringify(variants) !== JSON.stringify(entry.variantIds)) { entry.variantIds = variants; changed = true; }
+  }
+  if (hasLaraExercises && !plan.equipment.includes('band')) { plan.equipment.push('band'); changed = true; }
+  if (hasLaraExercises && !plan.equipment.includes('resistance band')) { plan.equipment.push('resistance band'); changed = true; }
+  return changed;
+}
+
 export function filterCatalog(catalog, equipment, query = '', category = '') {
   const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const terms = normalize(query).trim().split(/\s+/).filter(Boolean);

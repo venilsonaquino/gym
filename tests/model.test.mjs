@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { blankPlan, validatePlan, filterCatalog, moveExercise, selectVariant, isUntouchedPlan, addMissingStarterLegs } from '../model.mjs';
+import { blankPlan, validatePlan, filterCatalog, moveExercise, selectVariant, isUntouchedPlan, addMissingStarterLegs, addLaraBandVariants } from '../model.mjs';
 const catalog = JSON.parse(await readFile(new URL('../data/catalog.json', import.meta.url), 'utf8'));
 
 test('a plan round-trip keeps A/B/C, exercise IDs, ranges and equipment', () => {
@@ -88,4 +88,39 @@ test('adding C never replaces a customized legs workout', () => {
   previous.workouts[2].exercises = [previous.workouts[2].exercises[0]];
   assert.equal(addMissingStarterLegs(previous, starter), false);
   assert.equal(previous.workouts[2].exercises.length, 1);
+});
+
+const lara = JSON.parse(await readFile(new URL('../data/lara-plan.json', import.meta.url), 'utf8'));
+test('every exercise in Lara’s plan has a catalogued elastic-band option', () => {
+  assert.deepEqual(validatePlan(lara, catalog), lara);
+  const byId = new Map(catalog.map(exercise => [exercise.id, exercise]));
+  const exercises = lara.workouts.flatMap(workout => workout.exercises);
+  assert.equal(exercises.length, 18);
+  for (const entry of exercises) {
+    assert.ok(entry.variantIds.some(id => ['band', 'resistance band'].includes(byId.get(id).equipment)), entry.key);
+  }
+  assert.equal(byId.get(lara.workouts[0].exercises.at(-1).exerciseId).target, 'calves');
+  assert.equal(byId.get(lara.workouts[2].exercises[3].exerciseId).name, 'dumbbell lunge');
+});
+
+test('saved Lara plans gain band options without losing edits or changing Venilson’s plan', () => {
+  const saved = structuredClone(lara);
+  const first = saved.workouts[0].exercises[0];
+  first.variantIds = ['2287', '1463']; first.sets = 2; first.reps = '12';
+  saved.workouts[0].exercises.at(-1).exerciseId = '1367';
+  saved.workouts[0].exercises.at(-1).variantIds = ['1367'];
+  saved.workouts[2].exercises[3].exerciseId = '0303';
+  saved.workouts[2].exercises[3].variantIds = ['0303'];
+  saved.equipment = saved.equipment.filter(item => item !== 'band');
+  saved.workouts[1].exercises.push({ key: 'lara-custom', exerciseId: '0405', sets: 2, reps: '15' });
+  const originalStarter = structuredClone(starter);
+  assert.equal(addLaraBandVariants(saved, lara), true);
+  assert.equal(first.sets, 2); assert.equal(first.reps, '12');
+  assert.ok(first.variantIds.includes('1004'));
+  assert.equal(saved.workouts[0].exercises.at(-1).exerciseId, '0417');
+  assert.equal(saved.workouts[2].exercises[3].exerciseId, '0336');
+  assert.deepEqual(saved.workouts[1].exercises.at(-1), { key: 'lara-custom', exerciseId: '0405', sets: 2, reps: '15' });
+  assert.deepEqual(validatePlan(saved, catalog), saved);
+  assert.equal(addLaraBandVariants(saved, lara), false);
+  assert.deepEqual(starter, originalStarter);
 });
